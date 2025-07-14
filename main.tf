@@ -53,7 +53,10 @@ resource "aws_subnet" "private_subnet" {
 # NAT Gateway for private subnet
 # -----------------------
 resource "aws_eip" "nat_eip" {
-  vpc = true
+  domain = "vpc"
+  tags = {
+    Name = "nat_eip"
+  }
 }
 
 resource "aws_nat_gateway" "nat_gw" {
@@ -136,10 +139,10 @@ resource "aws_security_group" "aap_sg" {
 # -----------------------
 # SSH Key Pair
 # -----------------------
-resource "aws_key_pair" "default" {
-  key_name   = "aap-dr-test-key"
-  public_key = file("~/.ssh/id_rsa.pub")
-}
+# resource "aws_key_pair" "default" {
+#   key_name   = "aap-dr-test-key"
+#   public_key = file("~/.ssh/id_rsa.pub")
+# }
 
 # -----------------------
 # Variables and Locals
@@ -165,7 +168,7 @@ resource "aws_instance" "pgw" {
   instance_type               = local.instance_type
   subnet_id                   = aws_subnet.public_subnet.id
   vpc_security_group_ids      = [aws_security_group.aap_sg.id]
-  key_name                    = aws_key_pair.default.key_name
+  key_name                    = "aap-dr-key-pair"
 
   root_block_device {
     volume_size = 60
@@ -181,7 +184,7 @@ resource "aws_instance" "control" {
   instance_type               = local.instance_type
   subnet_id                   = aws_subnet.private_subnet.id
   vpc_security_group_ids      = [aws_security_group.aap_sg.id]
-  key_name                    = aws_key_pair.default.key_name
+  key_name                    = "aap-dr-key-pair"
 
   root_block_device {
     volume_size = 80
@@ -196,7 +199,7 @@ resource "aws_instance" "automation_hub" {
   instance_type               = local.instance_type
   subnet_id                   = aws_subnet.private_subnet.id
   vpc_security_group_ids      = [aws_security_group.aap_sg.id]
-  key_name                    = aws_key_pair.default.key_name
+  key_name                    = "aap-dr-key-pair"
 
   root_block_device {
     volume_size = 60
@@ -211,7 +214,8 @@ resource "aws_instance" "database" {
   instance_type               = local.instance_type
   subnet_id                   = aws_subnet.private_subnet.id
   vpc_security_group_ids      = [aws_security_group.aap_sg.id]
-  key_name                    = aws_key_pair.default.key_name
+  key_name                    = "aap-dr-key-pair"
+
 
   root_block_device {
     volume_size = 100
@@ -226,7 +230,7 @@ resource "aws_instance" "eda" {
   instance_type               = local.instance_type
   subnet_id                   = aws_subnet.private_subnet.id
   vpc_security_group_ids      = [aws_security_group.aap_sg.id]
-  key_name                    = aws_key_pair.default.key_name
+  key_name                    = "aap-dr-key-pair"
 
   root_block_device {
     volume_size = 60
@@ -242,7 +246,7 @@ resource "aws_instance" "execution_nodes" {
   instance_type               = local.instance_type
   subnet_id                   = aws_subnet.private_subnet.id
   vpc_security_group_ids      = [aws_security_group.aap_sg.id]
-  key_name                    = aws_key_pair.default.key_name
+  key_name                    = "aap-dr-key-pair"
 
   root_block_device {
     volume_size = 60
@@ -250,3 +254,12 @@ resource "aws_instance" "execution_nodes" {
 
   tags = merge(var.common_tags, { Name = "execution_node-${count.index + 1}" })
 }
+
+
+# 10.10.1.166   pgw.local
+# 10.10.2.163   controller1.local
+# 10.10.2.65   automation_hub.local
+# 10.10.2.235   database.local
+# 10.10.2.232   eda.local
+# 10.10.2.83   exec1.local
+# 10.10.2.188   exec2.local
