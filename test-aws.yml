@@ -1,0 +1,16 @@
+---
+- name: Count running EC2 instances
+  hosts: localhost
+  gather_facts: false
+  collections:
+    - amazon.aws
+
+  tasks:
+    - name: Get all EC2 instances
+      ec2_instance_info:
+        region: ap-southeast-1  # Replace with your AWS region
+      register: ec2_info
+
+    - name: Show count of running instances
+      debug:
+        msg: "There are {{ ec2_info.instances | selectattr('state.name', 'equalto', 'running') | list | length }} running EC2 instances"
