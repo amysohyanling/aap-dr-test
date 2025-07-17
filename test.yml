@@ -1,0 +1,12 @@
+---
+- name: Just simple test command
+  hosts: all
+  become: true
+  tasks:
+    - name: Run df -h
+      ansible.builtin.command: df -h
+      register: disk_output
+
+    - name: Show disk space
+      ansible.builtin.debug:
+        var: disk_output.stdout_lines
