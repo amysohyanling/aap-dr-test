@@ -158,7 +158,7 @@ resource "aws_instance" "pgw_ap2" {
   instance_type          = local.instance_type
   subnet_id              = aws_subnet.public_subnet_ap2.id
   vpc_security_group_ids = [aws_security_group.aap_sg_ap2.id]
-  key_name               = "aap-dr-key-pair"
+  key_name               = "aap-dr-key-pair-2"
 
   root_block_device {
     volume_size = 60
@@ -173,7 +173,7 @@ resource "aws_instance" "control_ap2" {
   instance_type          = local.instance_type
   subnet_id              = aws_subnet.private_subnet_ap2.id
   vpc_security_group_ids = [aws_security_group.aap_sg_ap2.id]
-  key_name               = "aap-dr-key-pair"
+  key_name               = "aap-dr-key-pair-2"
 
   root_block_device {
     volume_size = 80
@@ -187,7 +187,7 @@ resource "aws_instance" "automation_hub_ap2" {
   instance_type          = local.instance_type
   subnet_id              = aws_subnet.private_subnet_ap2.id
   vpc_security_group_ids = [aws_security_group.aap_sg_ap2.id]
-  key_name               = "aap-dr-key-pair"
+  key_name               = "aap-dr-key-pair-2"
 
   root_block_device {
     volume_size = 60
@@ -201,7 +201,7 @@ resource "aws_instance" "database_ap2" {
   instance_type          = local.instance_type
   subnet_id              = aws_subnet.private_subnet_ap2.id
   vpc_security_group_ids = [aws_security_group.aap_sg_ap2.id]
-  key_name               = "aap-dr-key-pair"
+  key_name               = "aap-dr-key-pair-2"
 
   root_block_device {
     volume_size = 100
@@ -215,7 +215,7 @@ resource "aws_instance" "eda_ap2" {
   instance_type          = local.instance_type
   subnet_id              = aws_subnet.private_subnet_ap2.id
   vpc_security_group_ids = [aws_security_group.aap_sg_ap2.id]
-  key_name               = "aap-dr-key-pair"
+  key_name               = "aap-dr-key-pair-2"
 
   root_block_device {
     volume_size = 60
@@ -230,7 +230,7 @@ resource "aws_instance" "execution_nodes_ap2" {
   instance_type          = local.instance_type
   subnet_id              = aws_subnet.private_subnet_ap2.id
   vpc_security_group_ids = [aws_security_group.aap_sg_ap2.id]
-  key_name               = "aap-dr-key-pair"
+  key_name               = "aap-dr-key-pair-2"
 
   root_block_device {
     volume_size = 60
